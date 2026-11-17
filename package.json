@@ -1,0 +1,14 @@
+{
+  "name": "pug-ssti-lab",
+  "version": "1.0.0",
+  "description": "A lab designed for understanding Pug server-side template injection",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "pug": "^3.0.4"
+  }
+}

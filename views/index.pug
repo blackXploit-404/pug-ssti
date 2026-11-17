@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Welcome to Kiosk
+    style.
+      :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f3f6fa; color: #172033; }
+      body { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; line-height: 1.55; }
+      header, section { background: white; border: 1px solid #dce3ed; border-radius: 12px; padding: 1.25rem; margin: 1rem 0; }
+      h1, h2 { line-height: 1.2; }
+      .tag { color: #725000; background: #fff2c7; padding: .2rem .5rem; border-radius: 999px; font-size: .85rem; }
+      code, pre { background: #f0f3f8; border-radius: 5px; }
+      code { padding: .1rem .3rem; }
+      pre { padding: 1rem; overflow-x: auto; }
+      input { width: min(100%, 34rem); padding: .65rem; border: 1px solid #aeb9ca; border-radius: 6px; }
+      button { padding: .65rem 1rem; margin: .5rem .4rem 0 0; border: 0; border-radius: 6px; background: #244db5; color: white; font-weight: 650; cursor: pointer; }
+      button.safe { background: #146247; }
+      .result { border-left: 4px solid #244db5; padding: .5rem 1rem; background: #f8faff; }
+  body
+    header
+      span.tag Story challenge · Pug
+      h1 The Welcome Kiosk
+      p The conference kiosk prints a personalized welcome banner. Its developer insists the “name” field is harmless because it is only used for a greeting.
+      p Your objective: recover the kiosk’s hidden staff badge.
+    section
+      h2 Kiosk preview
+      form(action="/vulnerable", method="get")
+        label(for="name") What name should the kiosk print?
+        br
+        input#name(type="text", name="name", maxlength="200", value=name, placeholder="Enter a name")
+        br
+        button(type="submit") Render vulnerable
+        button.safe(type="submit", formaction="/safe") Render safely
+      if result
+        h3 Printed banner
+        .result!= result
+        if won
+          h3 Challenge complete
+          p You made the kiosk evaluate template syntax and recovered its synthetic staff badge.
+    section
+      h2 Code review lesson
+      pre
+        code.
+          const source = `p Welcome, ${name}!`;
+          pug.render(source, { kiosk });
+
+          pug.render('p Welcome, #{name}!', { name });
+      p The vulnerable preview compiles request data as a template. The safe preview compiles fixed source and passes the name as a local.
